@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- Development page: draws the hero's key art from the game engine. scripts/make-posters.mjs reads it. -->
+<html lang="en">
+<head><meta charset="utf-8"><title>Key art</title></head>
+<body>
+<pre id="out"></pre>
+<script type="module">
+import { makeSearchMap } from '/src/ai/grid.js';
+import { runSearch } from '/src/ai/search.js';
+import { drawSearch, drawHud, WORLD } from '/src/game/draw.js';
+
+// the same labyrinth the hero's reel opens on: map 3, cut to the hero frame's 1280 x 716
+const W = 1600, H = 895, m = makeSearchMap(3, 55, 31), run = runSearch(m.g, m.start, m.goal, 'astar');
+const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+const ctx = cv.getContext('2d'), cs = W / m.g.cols;
+ctx.fillStyle = WORLD.night; ctx.fillRect(0, 0, W, H);
+ctx.save(); ctx.translate(0, Math.round((H - m.g.rows * cs) / 2));
+drawSearch(ctx, W, m.g, run, 1e9, { start: m.start, goal: m.goal, pathP: 1 });
+ctx.restore();
+drawHud(ctx, W, 'A*', `${run.steps} cells`);
+document.getElementById('out').textContent = cv.toDataURL('image/webp', 0.86);
+</script>
+</body>
+</html>

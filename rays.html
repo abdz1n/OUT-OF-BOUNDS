@@ -1,0 +1,16 @@
+<!doctype html>
+<!-- Development page: renders the light rays once for their still (rays-still.webp). scripts/make-posters.mjs reads it. -->
+<html lang="en">
+<head><meta charset="utf-8"><title>Rays still</title>
+<style>html, body { margin: 0; background: #080b11; } #r { position: fixed; inset: 0; }</style></head>
+<body>
+<div id="r"></div>
+<script type="module">
+import { createElement } from 'react';
+import { createRoot } from 'react-dom/client';
+import LightRays from '/src/components/reactbits/LightRays.jsx';
+import { RAYS } from '/src/components/LightFrame.jsx';
+createRoot(document.getElementById('r')).render(createElement(LightRays, { ...RAYS, followMouse: false, clickPulse: false, intro: false }));
+</script>
+</body>
+</html>

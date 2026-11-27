@@ -1,0 +1,129 @@
+/* Page CSS for what sits inside the game's visuals: the reel, the lab, the race, the hunt, the light frame and the
+   captures. Everything outside them is the design kit (public/assets). */
+:root {
+  --world-night: #080b11; --world-glow: #ffe6ad; --world-ember: #ffb347; --world-shade: #8fd0ff;
+  --chip-h: 40px;
+}
+@media (max-width: 639px), (pointer: coarse) { :root { --chip-h: 44px; } }
+
+/* the hero's film: the engine's canvas over the poster image */
+.reel { position: absolute; inset: 0; z-index: 1; }
+.reel__box, .reel__box > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ly-play[aria-pressed="true"] .ly-play__disc svg { margin-left: 0; }
+
+/* shared game controls */
+.game { position: relative; }
+.board { position: relative; border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--line); background: var(--world-night); }
+.board canvas { display: block; width: 100%; touch-action: none; }
+.seg { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.chip {
+  height: var(--chip-h); padding: 0 var(--s-4); border-radius: 999px; border: 1px solid var(--line-strong, var(--line));
+  background: transparent; color: var(--ink); font: 500 14px/1 var(--font-text); cursor: pointer;
+  transition: border-color var(--m-in, 150ms) var(--ease), background-color var(--m-in, 150ms) var(--ease);
+}
+.chip:hover { border-color: color-mix(in oklab, var(--ink) 45%, transparent); }
+.chip[aria-pressed="true"] { border-color: var(--action); background: color-mix(in oklab, var(--action) 18%, transparent); }
+.chip:disabled { opacity: .45; cursor: default; }
+.chip:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.slider { display: grid; gap: var(--s-1); font-size: 14px; color: var(--muted); }
+.slider b { color: var(--ink); font-weight: 500; }
+.slider input, .check input { accent-color: var(--action); }
+.slider input { width: 100%; min-height: 32px; margin: 0; }
+.check { display: inline-flex; align-items: center; gap: var(--s-2); font-size: 14px; color: var(--ink); min-height: var(--chip-h); cursor: pointer; }
+.check input { width: 18px; height: 18px; }
+.mono { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-1) var(--s-4); margin: 0; font-size: 14px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.mini { width: 100%; border-collapse: collapse; font: 12px/1.4 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mini th { text-align: left; font: 500 13px/1.4 var(--font-text); color: var(--muted); padding: 0 0 var(--s-1); border-bottom: 1px solid var(--line); }
+.mini td { padding: 5px 0; border-bottom: 1px solid var(--line); }
+.mini tr.is-next td { color: var(--world-glow); }
+.bar { display: block; height: 4px; margin-top: 4px; border-radius: 2px; background: var(--action); transform-origin: left center; }
+.bar--ghost { opacity: .35; }
+
+/* the search lab */
+.lab__board, .hunt__board { margin: 0; min-width: 0; }
+.lab__tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-3); }
+.lab__inspect { flex: 1 1 160px; color: var(--muted); min-width: 0; text-align: right; }
+.lab__panel { display: grid; gap: var(--s-4); min-width: 0; }
+.lab__card { display: grid; gap: var(--s-2); }
+.lab__card h3 { margin: 0; font: var(--display-weight) var(--t-card)/1.25 var(--font-display); letter-spacing: -0.01em; }
+.lab__card p { margin: 0; font-size: 15px; line-height: 1.5; }
+.lab__run { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.lab__run .btn { flex: 1 1 auto; }
+.lab__stats dd.is-over { color: var(--world-ember); }
+.lab__read { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: var(--s-5); align-items: start; }
+.lab__front { display: grid; gap: var(--s-2); min-height: 132px; }
+.lab__front .t-label { margin: 0; color: var(--muted); }
+
+/* the race: five boards and the scoreboard on the grid's span-4 columns */
+.race { align-items: start; }
+.race__score { display: grid; align-content: space-between; gap: var(--s-4); }
+.race__place { color: var(--world-glow); margin-left: var(--s-1); }
+.mini--score td:nth-child(2) { width: 44%; padding-right: var(--s-4); }
+
+/* the shadow hunt */
+.hunt__hud { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-4); margin-top: var(--s-3); font-size: 14px; }
+.hunt__embers { display: inline-flex; align-items: center; gap: var(--s-2); }
+.hunt__embers i { width: 10px; height: 10px; transform: rotate(45deg); border: 1.5px solid var(--world-ember); display: inline-block; }
+.hunt__embers i.is-got { background: var(--world-ember); }
+.hunt__over { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--s-5); background: color-mix(in oklab, var(--world-night) 80%, transparent); text-align: center; }
+.hunt__over > div { display: grid; gap: var(--s-3); justify-items: center; max-width: 34ch; }
+.hunt__over h3 { margin: 0; font: var(--display-weight) var(--t-card)/1.3 var(--font-display); letter-spacing: -0.01em; }
+.hunt__over p { margin: 0; }
+.hunt__panel { display: grid; gap: var(--s-3); min-width: 0; }
+.hunt__row { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); align-items: center; }
+.pad { display: none; grid-template-columns: repeat(3, var(--chip-h)); grid-template-rows: repeat(3, var(--chip-h)); gap: var(--s-1); }
+.pad .chip { padding: 0; font-size: 18px; }
+@media (pointer: coarse), (max-width: 1023px) { .pad { display: grid; } }
+.mind { display: grid; gap: var(--s-2); border-top: 1px solid var(--line); padding-top: var(--s-3); }
+.mind .t-label { margin: 0; color: var(--muted); }
+.mind p { margin: 0; }
+.mind__bars { display: grid; gap: var(--s-1); font-size: 14px; }
+.mind__tree { display: block; width: 100%; height: 168px; }
+.seg__gap { width: var(--s-3); }
+
+/* the light frame: the page's one effect, nothing over it */
+#light .frame { height: min(560px, calc(100svh - var(--padt) - var(--padb) - var(--bar, 0px))); padding: 0; background: var(--world-night); }
+#light .frame > .light { position: absolute; inset: 0; max-width: none; z-index: 1; }
+/* the still under the live canvas stays for a GPU that refuses the shader; LightFrame fades it once the rays draw */
+#light .frame > .light__still { z-index: 0; }
+
+/* the captures in the cards */
+#ai .panel { --p-h: 244px; position: relative; overflow: hidden; background: var(--world-night); }
+#faq .panel { position: relative; overflow: hidden; background: var(--world-night); width: 100%; max-width: 100%; min-height: 0; aspect-ratio: 21 / 15; height: auto; }
+.capture, .capture > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* the close's name, hand-set for its 17 letters so it runs line to line without leaving the wrap */
+#contact .close__word { font-size: min(calc((100vw - 2 * var(--gut)) / 8.2), 156px); line-height: 1.04; white-space: nowrap; }
+
+@media (max-width: 1023px) {
+  #search-race > * { grid-column: auto / span 6; }
+}
+/* the tablet stacks the splits, so these sections take two of its screens (the one page-CSS rule on a section) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  #ai, #faq { --h: 2; }
+  /* the lab and the hunt keep their split on a tablet: one screen each, the board beside its panel */
+  #search-lab > .span-6, #hunt-game > .span-6 { grid-column: auto / span 6; }
+  .lab__card p { display: none; }
+}
+@media (max-width: 639px) {
+  #search-race > * { grid-column: 1 / -1; }
+  #light .frame { height: 320px; }
+  .slider input { min-height: 44px; }
+  .lab__read { grid-template-columns: minmax(0, 1fr); }
+  .lab__card p, .lab__front { display: none; } /* the phone keeps the board, the controls and the counts */
+  #ai .panel { --p-h: 180px; }
+}
+@media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
+
+/* one button look on the whole page: the inverse action (near-black) wherever the main action sits on a light ground */
+/* set on the close itself: the lit footer sets its own --action, which the button would otherwise inherit */
+footer.footer--statement .closing__cta { --action: var(--p-inv-action); --action-ink: var(--p-inv-action-ink); }
+.actionbar { background: var(--p-inv-bg); --action: var(--p-inv-action); --action-ink: var(--p-inv-action-ink); --line: color-mix(in oklab, var(--p-inv-ink) 14%, transparent); }
+
+/* the film hero's box holds a 42-letter name in three lines: a little wider than the kit's 600px, and on a phone a
+   little less padding and a 32px line */
+@media (min-width: 1024px) { .hero--film .hero__over > :first-child { max-width: 680px; } .hero--film .hero__over h1 { max-width: 18ch; } }
+@media (max-width: 639px) { .hero--film .hero__over > :first-child { padding: var(--s-5) var(--s-4); } .hero--film .hero__over h1 { font-size: 32px; } }
